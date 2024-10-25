@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'user', // Default role is 'user'
     },
+    refreshToken: {
+      type: DataTypes.STRING
+    }
   });
 
   // Hash the password before saving
