@@ -41,7 +41,9 @@ exports.userLogin = async (req, res) => {
 
     const { accessToken, refreshToken } = generateTokens(user);
 
-    await user.update({ refreshToken });
+    user.refreshToken = refreshToken;
+
+    await user.save();
 
     res
       .status(200)
