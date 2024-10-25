@@ -5,10 +5,22 @@ const {
   updateTask,
   deleteTask,
 } = require('../controllers/taskController');
+const authenticateJWT = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
 
-router.post('/tasks', createTask);
-router.get('/tasks', getAllTasks);
-router.put('/tasks/:id', updateTask);
-router.delete('/tasks/:id', deleteTask);
+router.post('/tasks', authenticateJWT, roleMiddleware(['admin']), createTask);
+router.get('/tasks', authenticateJWT, roleMiddleware(['admin']), getAllTasks);
+router.put(
+  '/tasks/:id',
+  authenticateJWT,
+  roleMiddleware(['admin']),
+  updateTask
+);
+router.delete(
+  '/tasks/:id',
+  authenticateJWT,
+  roleMiddleware(['admin']),
+  deleteTask
+);
 
 module.exports = router;
