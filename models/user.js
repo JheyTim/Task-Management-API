@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     refreshToken: {
       type: DataTypes.STRING
+    },
+    twoFactorSecret: {
+      type: DataTypes.STRING
     }
   });
 
