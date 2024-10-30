@@ -4,6 +4,7 @@ const speakeasy = require('speakeasy');
 const { validationResult } = require('express-validator');
 const { User } = require('../models');
 const { generateTokens } = require('../utils/generateTokens');
+const { logger } = require('../utils/logger');
 
 // User registration route
 exports.userRegistration = async (req, res) => {
@@ -45,10 +46,13 @@ exports.userLogin = async (req, res) => {
 
     await user.save();
 
+    logger.info(`Login successful for user: ${user.email}`);
+
     res
       .status(200)
       .json({ message: 'Login successful', token: accessToken, refreshToken });
   } catch (error) {
+    logger.error(`Failed login attempt for email: ${req.body.email}`);
     res.status(500).json({ error: 'Login failed' });
   }
 };
@@ -70,6 +74,8 @@ exports.refreshToken = async (req, res) => {
     }
 
     const { accessToken } = generateTokens(user);
+
+    logger.info(`User successful for refreshToken: ${user.email}`);
 
     res.json({ token: accessToken });
   } catch (error) {
